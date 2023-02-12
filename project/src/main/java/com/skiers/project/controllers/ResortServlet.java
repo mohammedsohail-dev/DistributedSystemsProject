@@ -1,58 +1,34 @@
 package com.skiers.project.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.skiers.project.repositories.ResortRepository;
+
 import com.skiers.project.models.Resorts;
+import com.skiers.project.repositories.ResortsWhole;
 import com.google.gson.*;
 
 
-@WebServlet("/resorts/*")
+@WebServlet("/resorts/")
 public class ResortServlet extends HttpServlet {
     @Autowired
-    ResortRepository resortRepository;
+    ResortsWhole resortWhole;
     private Gson gson = new Gson();
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        StringBuilder sb = new StringBuilder();
-            String s;
-            while ((s = req.getReader().readLine()) != null) {
-                sb.append(s);
-            }
- 
-            Resorts resort = (Resorts) gson.fromJson(sb.toString(), Resorts.class);
-        // var modelMapper = new ModelMapper();
-        // priceDetails = modelMapper.map(resorts, Resorts.class);
-
-        
-        resortRepository.save(resort);
-       
-
-
-        
-    }
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] pathInfo = req.getPathInfo().split("/"); // read from path( resort/...)
-        String id = pathInfo[1]; // {id}
-        System.out.println("firstName" + id);
-        Resorts resorts =  resortRepository.findByMappingCode(id);// 
-    
-
-        //resp.setContentType("application/json");
-
-        String jsonString = gson.toJson(resorts); //
-
+        List<Resorts> listtotal = resortWhole.findAll();// 
+        
+        String jsonString = gson.toJson(listtotal); //
         PrintWriter out = resp.getWriter();
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
+        //resp.setContentType("application/json");
+        //resp.setCharacterEncoding("UTF-8");
+        System.out.println(listtotal);
         out.print(jsonString);
         out.flush();
 
@@ -60,4 +36,9 @@ public class ResortServlet extends HttpServlet {
     }
 }
 
-   
+
+
+
+
+
+
