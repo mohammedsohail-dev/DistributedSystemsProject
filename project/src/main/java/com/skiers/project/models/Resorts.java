@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 
 public class Resorts {
     @Id
-    Integer resortID;
     String resortName;
+    String resortID;
     String year;
     
 }

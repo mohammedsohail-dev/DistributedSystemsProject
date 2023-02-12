@@ -12,7 +12,7 @@ import com.skiers.project.models.Resorts;
 import com.google.gson.*;
 
 
-@WebServlet("/resorts/{resortID}")
+@WebServlet("/resorts/*")
 public class ResortServlet extends HttpServlet {
     @Autowired
     ResortRepository resortRepository;
@@ -20,41 +20,35 @@ public class ResortServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String emailId = req.getParameter("emailId");
-        String password = req.getParameter("password");
+        StringBuilder sb = new StringBuilder();
+            String s;
+            while ((s = req.getReader().readLine()) != null) {
+                sb.append(s);
+            }
+ 
+            Resorts resort = (Resorts) gson.fromJson(sb.toString(), Resorts.class);
+        // var modelMapper = new ModelMapper();
+        // priceDetails = modelMapper.map(resorts, Resorts.class);
 
-        resp.setContentType("text/html");
-        PrintWriter printWriter = resp.getWriter();
-        printWriter.print("<html>");
-        printWriter.print("<body>");
-        printWriter.print("<h1>Student Resistration Form Data</h1>");
-        printWriter.print("<p> firstName :: " + firstName + "</p>");
-        printWriter.print("<p> lastName :: " + firstName + "</p>");
-        printWriter.print("<p> firstName :: " + firstName + "</p>");
-        printWriter.print("<p> firstName :: " + firstName + "</p>");
-        printWriter.print("</body>");
-        printWriter.print("</html>");
-        printWriter.close();
+        
+        resortRepository.save(resort);
+       
 
-        System.out.println("firstName :: " + firstName);
-        System.out.println("lastName :: " + lastName);
-        System.out.println("emailId :: " + emailId);
-        System.out.println("password :: " + password);
+
+        
     }
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] pathInfo = req.getPathInfo().split("/");
+        String[] pathInfo = req.getPathInfo().split("/"); // read from path( resort/...)
         String id = pathInfo[1]; // {id}
-        System.out.println("" + id);
-        Resorts resorts =  resortRepository.findByMappingCode(id);
+        System.out.println("firstName" + id);
+        Resorts resorts =  resortRepository.findByMappingCode(id);// 
     
 
         //resp.setContentType("application/json");
 
-        String jsonString = gson.toJson(resorts);
+        String jsonString = gson.toJson(resorts); //
 
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json");
@@ -63,6 +57,7 @@ public class ResortServlet extends HttpServlet {
         out.flush();
 
         
-    }}
+    }
+}
 
    
