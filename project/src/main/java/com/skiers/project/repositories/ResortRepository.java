@@ -8,6 +8,10 @@ import com.skiers.project.models.Resorts;
 public interface ResortRepository extends MongoRepository<Resorts, String> {
         @Query(value = "{ 'resortID': ?0 }")
         Resorts findByMappingCode(String resortID);
+        
+
+
+        
 
         
         

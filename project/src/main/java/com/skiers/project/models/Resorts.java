@@ -1,6 +1,6 @@
 package com.skiers.project.models;
-
-import javax.persistence.Id;
+import java.util.ArrayList;
+import jakarta.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +11,7 @@ public class Resorts {
     String resortName;
     String resortID;
     String year;
+    public ArrayList<String> seasons;
 
    
     
